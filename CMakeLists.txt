@@ -5,9 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 project(easyduck VERSION 0.1.0)
 
-# Write version.json using template
-configure_file(${CMAKE_SOURCE_DIR}/pipelines/version_template.json ${CMAKE_BINARY_DIR}/version.json @ONLY)
-
 add_subdirectory(external/JUCE)                  
 add_subdirectory(external/BDSP)
 
