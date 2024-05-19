@@ -21,8 +21,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <JuceHeader.h>
 #include "typedefs.h"
-#include "parameters/ParamVolume.h"
-#include "parameters/ParamGain.h"
+#include "parameters/ParamMode.h"
+#include "parameters/ParamDuck.h"
 
 class PluginParameters
 {
@@ -30,13 +30,13 @@ public:
     explicit PluginParameters(juce::AudioProcessor &processor);
 
 private:
-    ParamVolume param_volume;
-    std::atomic<float> *normval_volume;
-    float volume();
+    ParamMode param_mode;
+    std::atomic<float> *normval_mode;
+    float mode();
 
-    ParamGain param_gain;
-    std::atomic<float> *normval_gain;
-    float gain();
+    ParamDuck param_duck;
+    std::atomic<float> *normval_duck;
+    float duck();
 
     Apvts::ParameterLayout parameter_layout();
 

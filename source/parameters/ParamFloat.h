@@ -1,12 +1,10 @@
 #ifndef _PARAM_FLOAT_H
 #define _PARAM_FLOAT_H
 
+#include "ParamBase.h"
 #include <JuceHeader.h>
 
-static const auto RANGE_DEFAULT = juce::NormalisableRange<float>(0.0f, 1.0f, 0.0000001f);
-static const auto CATEGORY_DEFAULT = juce::AudioProcessorParameter::genericParameter;
-
-class ParamFloat
+class ParamFloat : public ParamBase
 {
 public:
     ParamFloat(const juce::String _name,
@@ -23,21 +21,11 @@ public:
 
 private:
     const juce::String name;
-    int version;
-    float val_default;
+    const int version;
+    const float val_default;
     std::function<String(float value, int maximumStringLength)> string_from_value;
-    juce::AudioProcessorParameter::Category category;
-    juce::NormalisableRange<float> range;
-
-protected:
-    static void constrain_string_length(String &s, int max_len)
-    {
-        const int len = s.length();
-        if (len > max_len)
-        {
-            s = s.dropLastCharacters(len - max_len);
-        }
-    }
+    const juce::AudioProcessorParameter::Category category;
+    const juce::NormalisableRange<float> range;
 };
 
 #endif // _PARAM_FLOAT_H

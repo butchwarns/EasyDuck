@@ -19,22 +19,21 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "PluginParameters.h"
 
 PluginParameters::PluginParameters(juce::AudioProcessor &processor)
-    : param_volume(),
-      param_gain(),
+    : param_mode(), param_duck(),
       apvts(processor, nullptr, "parameters", parameter_layout())
 {
-    normval_volume = apvts.getRawParameterValue(param_volume.id());
-    normval_gain = apvts.getRawParameterValue(param_gain.id());
+    normval_mode = apvts.getRawParameterValue(param_mode.id());
+    normval_duck = apvts.getRawParameterValue(param_duck.id());
 }
 
-float PluginParameters::volume()
+float PluginParameters::mode()
 {
-    return (float)param_volume.denormalise(*normval_volume);
+    return *normval_mode;
 }
 
-float PluginParameters::gain()
+float PluginParameters::duck()
 {
-    return (float)param_volume.denormalise(*normval_gain);
+    return (float)param_duck.denormalise(*normval_duck);
 }
 
 Apvts::ParameterLayout PluginParameters::parameter_layout()
@@ -43,11 +42,11 @@ Apvts::ParameterLayout PluginParameters::parameter_layout()
 
     typedef juce::AudioProcessorParameterGroup ParameterGroup;
 
-    auto grp_output = std::make_unique<ParameterGroup>("output", "OUTPUT", "|");
-    grp_output->addChild(param_volume.parameter());
-    grp_output->addChild(param_gain.parameter());
+    auto grp_easyduck = std::make_unique<ParameterGroup>("EasyDuck", "EASY_DUCK", "|");
+    grp_easyduck->addChild(param_mode.parameter());
+    grp_easyduck->addChild(param_duck.parameter());
 
-    layout.add(std::move(grp_output));
+    layout.add(std::move(grp_easyduck));
 
     return layout;
 }
