@@ -18,6 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "ui/sizes.h"
+
+int PluginProcessor::window_width_saved = sizes_ui::WIN_WIDTH;
+int PluginProcessor::window_height_saved = sizes_ui::WIN_HEIGHT;
 
 PluginProcessor::PluginProcessor()
     : AudioProcessor(BusesProperties()
@@ -153,18 +157,55 @@ bool PluginProcessor::hasEditor() const
 
 juce::AudioProcessorEditor *PluginProcessor::createEditor()
 {
-    // return new PluginProcessorEditor(*this);
-    return new juce::GenericAudioProcessorEditor(*this);
+    return new PluginEditor(*this);
 }
 
 void PluginProcessor::getStateInformation(juce::MemoryBlock &destData)
 {
-    juce::ignoreUnused(destData);
+    // Save window size to state
+    auto elem = parameters.apvts.state.getOrCreateChildWithName("window_size", nullptr);
+    elem.setProperty("window_width", window_width_saved, nullptr);
+    elem.setProperty("window_height", window_height_saved, nullptr);
+
+    auto state = parameters.apvts.copyState();
+
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void PluginProcessor::setStateInformation(const void *data, int sizeInBytes)
 {
-    juce::ignoreUnused(data, sizeInBytes);
+    std::unique_ptr<juce::XmlElement> xml = getXmlFromBinary(data, sizeInBytes);
+    if (xml != nullptr)
+    {
+        if (xml->hasTagName(parameters.apvts.state.getType()))
+        {
+            auto state = juce::ValueTree::fromXml(*xml);
+            parameters.apvts.replaceState(state);
+
+            // Restore window size from state
+            auto elem = parameters.apvts.state.getChildWithName("window_size");
+            const int width = elem.getProperty("window_width");
+            const int height = elem.getProperty("window_height");
+            set_saved_window_size(width, height);
+        }
+    }
+}
+
+void PluginProcessor::set_saved_window_size(int _window_width_saved, int _window_height_saved)
+{
+    window_width_saved = _window_width_saved;
+    window_height_saved = _window_height_saved;
+}
+
+int PluginProcessor::get_saved_window_width()
+{
+    return window_width_saved;
+}
+
+int PluginProcessor::get_saved_window_height()
+{
+    return window_height_saved;
 }
 
 // This creates new instances of the plugin..

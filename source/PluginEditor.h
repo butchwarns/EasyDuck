@@ -16,21 +16,30 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifndef PLUGIN_EDITOR_H
+#define PLUGIN_EDITOR_H
 
 #include "PluginProcessor.h"
+#include "typedefs.h"
+#include "ui/WindowContents.h"
 
-class PluginEditor final : public juce::AudioProcessorEditor
+class PluginEditor
+    : public AudioProcessorEditor,
+      public ComponentBoundsConstrainer
 {
 public:
-    explicit PluginEditor(PluginProcessor &);
+    explicit PluginEditor(PluginProcessor &p);
     ~PluginEditor() override;
 
     void paint(juce::Graphics &) override;
     void resized() override;
 
 private:
-    PluginProcessor &processorRef;
+    PluginProcessor &processor_ref;
+
+    WindowContents window_contents;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginEditor)
 };
+
+#endif // PLUGIN_EDITOR_H

@@ -54,8 +54,15 @@ public:
     void getStateInformation(juce::MemoryBlock &destData) override;
     void setStateInformation(const void *data, int sizeInBytes) override;
 
+    static void set_saved_window_size(int _window_width_saved, int _window_height_saved);
+    static int get_saved_window_width();
+    static int get_saved_window_height();
+
 private:
     PluginParameters parameters;
+
+    static int window_width_saved;
+    static int window_height_saved;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginProcessor)
 };

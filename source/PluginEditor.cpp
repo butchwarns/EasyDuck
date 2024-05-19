@@ -16,34 +16,48 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "PluginProcessor.h"
+#include "ui/sizes.h"
 
-PluginEditor::PluginEditor(PluginProcessor &p)
-    : AudioProcessorEditor(&p), processorRef(p)
+PluginEditor::PluginEditor(PluginProcessor &_processor)
+    : AudioProcessorEditor(&_processor), processor_ref(_processor), window_contents(_processor)
 {
-    juce::ignoreUnused(processorRef);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize(400, 300);
+    // // Get (usable) screen size, might be useful later..
+    // const juce::Displays::Display *display = juce::Desktop::getInstance().getDisplays().getPrimaryDisplay();
+    // juce::Rectangle<int> user_area = display->userArea;
+
+    const auto width_saved = (int)processor_ref.get_saved_window_width();
+    const auto height_saved = (int)processor_ref.get_saved_window_height();
+    setSize(width_saved, height_saved);
+
+    // Make window resizable only with corner resizer, not by host
+    setResizable(false, true);
+
+    // Constrain aspect ratio
+    setFixedAspectRatio((float)sizes_ui::WIN_WIDTH / (float)sizes_ui::WIN_HEIGHT);
+    setMinimumSize(sizes_ui::WIN_WIDTH / 2, sizes_ui::WIN_HEIGHT / 2);
+    setConstrainer(this);
+
+    addAndMakeVisible(&window_contents);
 }
 
 PluginEditor::~PluginEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 void PluginEditor::paint(juce::Graphics &g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-
-    g.setColour(juce::Colours::white);
-    g.setFont(15.0f);
-    g.drawFittedText("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.fillAll(juce::Colours::black);
 }
 
 void PluginEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    const float window_scale = (float)getWidth() / (float)sizes_ui::WIN_WIDTH;
+
+    window_contents.setBounds(0, 0, sizes_ui::WIN_WIDTH, sizes_ui::WIN_HEIGHT);
+    window_contents.setTransform(AffineTransform::scale(window_scale));
+
+    processor_ref.set_saved_window_size(getWidth(), getHeight());
 }
