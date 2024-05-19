@@ -20,8 +20,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "PluginEditor.h"
 
 PluginProcessor::PluginProcessor()
-    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)),
-     parameters(*this)
+    : AudioProcessor(BusesProperties()
+                         .withInput("Input", juce::AudioChannelSet::stereo())
+                         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
+                         .withInput("Sidechain", juce::AudioChannelSet::stereo())),
+      parameters(*this)
 {
 }
 
@@ -96,7 +99,24 @@ void PluginProcessor::releaseResources()
 
 bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
+    // Do not support disabled inputs/outputs
+    if (layouts.getMainInputChannelSet() == juce::AudioChannelSet::disabled() || layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled())
+        return false;
+
+    // Stereo output
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+    {
+        return false;
+    }
+
+    // Stereo input
+    if (layouts.getMainInputChannelSet() != juce::AudioChannelSet::stereo())
+    {
+        return false;
+    }
+
+    // Stereo sidechain input
+    if (layouts.getChannelSet(true, 1) != juce::AudioChannelSet::stereo())
     {
         return false;
     }
@@ -111,18 +131,18 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float> &buffer,
 
     juce::ScopedNoDenormals noDenormals;
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+    const int OFFSET_SIDECHAIN_CHANNELS = 2;
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
-        auto *channelData = buffer.getWritePointer(channel);
-        juce::ignoreUnused(channelData);
-        // ..do something to the data...
+        auto input_sidechain = buffer.getReadPointer(channel + OFFSET_SIDECHAIN_CHANNELS);
+
+        auto *y = buffer.getWritePointer(channel);
+
+        for (int i = 0; i < buffer.getNumSamples(); ++i)
+        {
+            y[i] += input_sidechain[i];
+        }
     }
 }
 
