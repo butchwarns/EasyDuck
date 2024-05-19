@@ -116,7 +116,7 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
     }
 
     // Stereo sidechain input
-    if (layouts.getChannelSet(true, 1) != juce::AudioChannelSet::stereo())
+    if (layouts.getNumChannels(true, 2) != 2)
     {
         return false;
     }
