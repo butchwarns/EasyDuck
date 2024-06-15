@@ -18,21 +18,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "WindowContents.h"
 
-WindowContents::WindowContents(juce::AudioProcessor &processor)
-    : generic_editor(processor)
+WindowContents::WindowContents(PluginProcessor &_processor)
+    : processor(_processor), generic_editor(_processor)
 {
     addAndMakeVisible(generic_editor);
 }
 
 void WindowContents::paint(Graphics &g)
 {
-    g.fillAll(juce::Colours::blueviolet);
+    ignoreUnused(g);
 }
 
 void WindowContents::resized()
 {
     auto bounds = getLocalBounds();
-    bounds.reduce(10, 10);
 
     generic_editor.setBounds(bounds);
 }

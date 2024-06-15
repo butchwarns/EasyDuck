@@ -20,13 +20,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #define _WINDOW_CONTENTS_H_
 
 #include <JuceHeader.h>
+#include "../PluginProcessor.h"
 
-class WindowContents : public Component
+class WindowContents
+    : public Component
 {
 public:
-    WindowContents(juce::AudioProcessor &processor);
+    WindowContents(PluginProcessor &_processor);
 
 private:
+    PluginProcessor &processor;
     void paint(Graphics &g) override;
     void resized() override;
 

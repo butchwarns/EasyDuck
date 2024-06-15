@@ -90,15 +90,11 @@ void PluginProcessor::changeProgramName(int index, const juce::String &newName)
 
 void PluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
     juce::ignoreUnused(sampleRate, samplesPerBlock);
 }
 
 void PluginProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
 }
 
 bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
@@ -135,6 +131,7 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float> &buffer,
 
     juce::ScopedNoDenormals noDenormals;
     auto totalNumOutputChannels = getTotalNumOutputChannels();
+
     const int OFFSET_SIDECHAIN_CHANNELS = 2;
 
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
