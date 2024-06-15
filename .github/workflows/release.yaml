@@ -22,11 +22,12 @@ jobs:
           ref: ${{ github.ref }}
           submodules: recursive
 
+      - name: Fetch branches
+        run: git fetch --all
+
       - name: Get branch name
         id: get_branch_name
         run: |
-          # Fetch all branches
-          git fetch --all
           # Find the branch that contains the tag
           BRANCH=$(git branch --contains ${GITHUB_REF} | grep -v "detached" | sed 's/* //')
           echo "Branch name for ${GITHUB_REF}: $BRANCH"
