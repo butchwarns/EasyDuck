@@ -22,7 +22,7 @@ juce_add_plugin(easyduck
     PLUGIN_MANUFACTURER_CODE Buwa       # A four-character manufacturer id with at least one upper-case character
     PLUGIN_CODE Duck                    # A unique four-character plugin id with exactly one upper-case character
                                         # GarageBand 10.3 requires the first letter to be upper-case, and the remaining letters to be lower-case
-    FORMATS VST3 AU                     # The formats to build. Valid formats are: VST3 AAX Unity VST AU AUv3 Standalone
+    FORMATS VST3 AU AAX                 # The formats to build. Valid formats are: VST3 AAX Unity VST AU AUv3 Standalone
     PRODUCT_NAME "easyduck")            # The name of the final executable, which can differ from the target name
 
 ###############################################################################
@@ -50,7 +50,6 @@ juce_add_binary_data(PluginBinaryData
     NAMESPACE 
         BinaryData
     SOURCES
-        build/version.json
         resources/fonts/Inter-Regular.otf
         resources/fonts/Inter-Italic.otf
         resources/fonts/Inter-Bold.otf
