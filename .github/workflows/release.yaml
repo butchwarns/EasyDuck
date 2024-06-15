@@ -35,7 +35,7 @@ jobs:
 
       - name: "build_and_copy.sh release"
         run: |
-          sudo ./pipelines/build_and_copy.sh release --PLUGIN_COPY_STEP=TRUE
+          ./pipelines/build_and_copy.sh release --PLUGIN_COPY_STEP=FALSE
         shell: bash
 
       - name: "validate.sh"
@@ -63,7 +63,7 @@ jobs:
         run: hdiutil attach Packages.dmg
 
       - name: Install Packages
-        run: sudo installer -pkg /Volumes/Packages\ 1.2.10/Install\ Packages.pkg -target /
+        run: installer -pkg /Volumes/Packages\ 1.2.10/Install\ Packages.pkg -target /
 
       - name: "package.sh"
         run: |
