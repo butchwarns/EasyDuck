@@ -18,17 +18,17 @@ else
     exit 1
 fi
 
-# Make folder for built plugins
-cd "$ROOT/pipelines"
-rm -Rf bin
-mkdir bin
-
 # Build plugin
 mkdir -p "$ROOT/build"
 cd "$ROOT/build"
 cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11
 cmake --build . --config $BUILD_TYPE
 
-# Copy plugin builds to dedicated folder
-cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/AU/$PLUGIN.component" "$ROOT/pipelines/bin"
-cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/VST3/$PLUGIN.vst3" "$ROOT/pipelines/bin"
+# Make folder for built plugins
+cd "$ROOT"
+BIN_FOLDER=pipelines/bin
+rm -Rf ./$BIN_FOLDER 
+mkdir ./$BIN_FOLDER
+echo "Copying plugin builds to $BIN_FOLDER"
+cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/AU/$PLUGIN.component" "$ROOT/$BIN_FOLDER"
+cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/VST3/$PLUGIN.vst3" "$ROOT/$BIN_FOLDER"
