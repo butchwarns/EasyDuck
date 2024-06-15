@@ -17,13 +17,22 @@ jobs:
         with:
           xcode-version: "15.1"
 
+      - name: Get branch name for tag
+        id: fetch_branch
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          BRANCH_NAME=$(git branch --contains $TAG_NAME)
+          echo "BRANCH_NAME=${BRANCH_NAME#* }" >> $GITHUB_ENV
+        env:
+          GITHUB_REF: ${{ github.ref }}
+
       - name: Set release type
         id: set_release_type
         run: |
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            if [[ "${GITHUB_BASE_REF}" == "refs/heads/main" ]]; then
+            if [[ "${BRANCH_NAME}" == "main" ]]; then
               echo "RELEASE_TYPE=regular" >> $GITHUB_ENV
-            elif [[ "${GITHUB_BASE_REF}" == "refs/heads/develop" ]]; then
+            elif [[ "${BRANCH_NAME}" == "develop" ]]; then
               echo "RELEASE_TYPE=prerelease" >> $GITHUB_ENV
             else
               echo "RELEASE_TYPE=unknown" >> $GITHUB_ENV
@@ -31,7 +40,7 @@ jobs:
           fi
         env:
           GITHUB_REF: ${{ github.ref }}
-          GITHUB_BASE_REF: ${{ github.base_ref }}
+          BRANCH_NAME: ${{ env.BRANCH_NAME }}
 
       - name: Checkout code
         uses: actions/checkout@v4
