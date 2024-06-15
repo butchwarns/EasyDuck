@@ -11,8 +11,12 @@ concurrency:
 jobs:
   release_pipeline:
     name: release_pipeline
-    runs-on: macos-14-large
+    runs-on: macos-latest
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.1"
+
       - name: Set release type
         id: set_release_type
         run: |
