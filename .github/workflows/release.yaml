@@ -22,28 +22,16 @@ jobs:
           ref: ${{ github.ref }}
           submodules: recursive
 
-      - name: Get branch name
-        id: get_branch_name
-        run: |
-          BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          echo "Branch name for ${GITHUB_REF}: ${BRANCH}"
-          echo "BRANCH_NAME=${BRANCH}" >> $GITHUB_ENV
-
-      - name: Set release type
+      - name: Determine release type
         id: set_release_type
         run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            if [[ "${BRANCH_NAME}" == "main" ]]; then
-              echo "RELEASE_TYPE=regular" >> $GITHUB_ENV
-            elif [[ "${BRANCH_NAME}" == "develop" ]]; then
-              echo "RELEASE_TYPE=prerelease" >> $GITHUB_ENV
-            else
-              echo "RELEASE_TYPE=unknown" >> $GITHUB_ENV
-            fi
+          if [[ "${GITHUB_REF##*/}" == *pre ]]; then
+            echo "Release type: prerelease"
+            echo "RELEASE_TYPE=pre" >> $GITHUB_ENV
+          else
+            echo "Release type: production"
+            echo "RELEASE_TYPE=prod" >> $GITHUB_ENV
           fi
-        env:
-          GITHUB_REF: ${{ github.ref }}
-          BRANCH_NAME: ${{ env.BRANCH_NAME }}
 
       - name: "build_and_copy.sh release"
         run: |
@@ -104,17 +92,17 @@ jobs:
 
       - name: "Upload Release"
         run: |
-          if [ "${{ env.RELEASE_TYPE }}" == "regular" ]; then
+          if [ "${{ env.RELEASE_TYPE }}" == "production" ]; then
             ./pipelines/upload_release.sh ${{ env.TAG_NAME }}
           elif [ "${{ env.RELEASE_TYPE }}" == "prerelease" ]; then
             ./pipelines/upload_release.sh ${{ env.TAG_NAME }} --prerelease
           else
-            echo "Unknown release type"
+            echo "Unknown release type!"
             exit 1
           fi
         shell: bash
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: upload_artifact
         uses: actions/upload-artifact@v3
