@@ -1,6 +1,6 @@
 # easyduck CMakeLists.txt
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 17)
 
 project(easyduck VERSION 0.1.0)
@@ -43,7 +43,6 @@ target_compile_definitions(easyduck
         JUCE_WEB_BROWSER=0                  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_plugin` call
         JUCE_USE_CURL=0                     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_plugin` call
         JUCE_VST3_CAN_REPLACE_VST2=0
-        JUCE_DISPLAY_SPLASH_SCREEN=0        # If you disable the splashscreen, you either need a valid JUCE license or release under GPLv3
         JUCE_REPORT_APP_USAGE=0
         JUCE_ENABLE_REPAINT_DEBUGGING=0)
 
