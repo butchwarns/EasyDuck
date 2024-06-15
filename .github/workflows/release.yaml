@@ -17,6 +17,22 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Set release type
+        id: set_release_type
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            if [[ "${GITHUB_BASE_REF}" == "refs/heads/main" ]]; then
+              echo "RELEASE_TYPE=regular" >> $GITHUB_ENV
+            elif [[ "${GITHUB_BASE_REF}" == "refs/heads/develop" ]]; then
+              echo "RELEASE_TYPE=prerelease" >> $GITHUB_ENV
+            else
+              echo "RELEASE_TYPE=unknown" >> $GITHUB_ENV
+            fi
+          fi
+        env:
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_BASE_REF: ${{ github.base_ref }}
+
       - name: "build_and_copy.sh release"
         run: |
           ./pipelines/build_and_copy.sh release
@@ -74,8 +90,16 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
 
-      - name: "upload_release.sh"
-        run: ./pipelines/upload_release.sh ${{ env.TAG_NAME }}
+      - name: "Upload Release"
+        run: |
+          if [ "${{ env.RELEASE_TYPE }}" == "regular" ]; then
+            ./pipelines/upload_release.sh ${{ env.TAG_NAME }}
+          elif [ "${{ env.RELEASE_TYPE }}" == "prerelease" ]; then
+            ./pipelines/upload_release.sh ${{ env.TAG_NAME }} --prerelease
+          else
+            echo "Unknown release type"
+            exit 1
+          fi
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
