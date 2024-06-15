@@ -11,7 +11,7 @@ concurrency:
 jobs:
   release_pipeline:
     name: release_pipeline
-    runs-on: macos-latest
+    runs-on: macos-14-large
     steps:
       - name: Set release type
         id: set_release_type
