@@ -3,27 +3,29 @@
 cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 17)
 
+option(PLUGIN_COPY_STEP "Copy the plugin to the default location after building")
+
 project(easyduck VERSION 0.1.0)
 
 add_subdirectory(external/JUCE)                  
 add_subdirectory(external/BDSP)
 
 juce_add_plugin(easyduck
-    # VERSION ...                       # Set this if the plugin version is different to the project version
-    # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
+    # VERSION ...                               # Set this if the plugin version is different to the project version
+    # ICON_BIG ...                              # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
     # ICON_SMALL ...
-    COMPANY_NAME "butch_warns"          # Specify the name of the plugin's author
-    IS_SYNTH FALSE                      # Is this a synth or an effect?
-    NEEDS_MIDI_INPUT FALSE              # Does the plugin need midi input?
-    NEEDS_MIDI_OUTPUT FALSE             # Does the plugin need midi output?
-    IS_MIDI_EFFECT FALSE                # Is this plugin a MIDI effect?
-    EDITOR_WANTS_KEYBOARD_FOCUS FALSE   # Does the editor need keyboard focus?
-    COPY_PLUGIN_AFTER_BUILD FALSE       # Should the plugin be installed to a default location after building?
-    PLUGIN_MANUFACTURER_CODE Buwa       # A four-character manufacturer id with at least one upper-case character
-    PLUGIN_CODE Duck                    # A unique four-character plugin id with exactly one upper-case character
-                                        # GarageBand 10.3 requires the first letter to be upper-case, and the remaining letters to be lower-case
-    FORMATS VST3 AU AAX                 # The formats to build. Valid formats are: VST3 AAX Unity VST AU AUv3 Standalone
-    PRODUCT_NAME "easyduck")            # The name of the final executable, which can differ from the target name
+    COMPANY_NAME "butch_warns"                  # Specify the name of the plugin's author
+    IS_SYNTH FALSE                              # Is this a synth or an effect?
+    NEEDS_MIDI_INPUT FALSE                      # Does the plugin need midi input?
+    NEEDS_MIDI_OUTPUT FALSE                     # Does the plugin need midi output?
+    IS_MIDI_EFFECT FALSE                        # Is this plugin a MIDI effect?
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE           # Does the editor need keyboard focus?
+    COPY_PLUGIN_AFTER_BUILD ${PLUGIN_COPY_STEP} # Should the plugin be installed to a default location after building?
+    PLUGIN_MANUFACTURER_CODE Buwa               # A four-character manufacturer id with at least one upper-case character
+    PLUGIN_CODE Duck                            # A unique four-character plugin id with exactly one upper-case character
+                                                # GarageBand 10.3 requires the first letter to be upper-case, and the remaining letters to be lower-case
+    FORMATS VST3 AU AAX                         # The formats to build. Valid formats are: VST3 AAX Unity VST AU AUv3 Standalone
+    PRODUCT_NAME "easyduck")                    # The name of the final executable, which can differ from the target name
 
 ###############################################################################
 # Sources

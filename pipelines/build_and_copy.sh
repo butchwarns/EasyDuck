@@ -18,10 +18,24 @@ else
     exit 1
 fi
 
+# Check second argument for PLUGIN_COPY_STEP
+PLUGIN_COPY_STEP=TRUE
+case "$2" in
+  --PLUGIN_COPY_STEP=TRUE)
+    PLUGIN_COPY_STEP=TRUE
+    ;;
+  --PLUGIN_COPY_STEP=FALSE)
+    PLUGIN_COPY_STEP=FALSE
+    ;;
+  *)
+    echo Defaulting PLUGIN_COPY_STEP to $PLUGIN_COPY_STEP
+    ;;
+esac
+
 # Build plugin
 mkdir -p "$ROOT/build"
 cd "$ROOT/build"
-cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11
+cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11 -DPLUGIN_COPY_STEP=$PLUGIN_COPY_STEP
 cmake --build . --config $BUILD_TYPE
 
 # Make folder for built plugins
