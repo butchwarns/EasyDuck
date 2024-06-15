@@ -14,7 +14,7 @@ if [ "$1" == "debug" ]; then
 elif [ "$1" == "release" ]; then
     BUILD_TYPE="Release"
 else
-    echo "Invalid argument. Please specify 'debug' or 'release'."
+    echo -e "\nInvalid argument. Please specify 'debug' or 'release'!\n"
     exit 1
 fi
 
@@ -28,7 +28,7 @@ case "$2" in
     PLUGIN_COPY_STEP=FALSE
     ;;
   *)
-    echo Defaulting PLUGIN_COPY_STEP to $PLUGIN_COPY_STEP
+    echo -e "\nDefaulting to --PLUGIN_COPY_STEP=$PLUGIN_COPY_STEP\n"
     ;;
 esac
 
