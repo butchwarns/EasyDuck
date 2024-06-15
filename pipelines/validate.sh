@@ -6,7 +6,7 @@ set +x
 PLUGIN="easyduck"
 
 ROOT=$(cd "$(dirname "$0")/.."; pwd)
-cd "$ROOT/ci_cd/"
+cd "$ROOT/piepelines/"
 
 # Run pluginval on VST3
 echo  "##########################################"

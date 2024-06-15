@@ -3,7 +3,7 @@
 # Disable shell debug output
 set +x
 
-# Clean ci_cd folder
+# Clean piepelines folder
 
 scriptdir="$(dirname "$0")"
 cd "$scriptdir"

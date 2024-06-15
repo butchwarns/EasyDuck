@@ -6,7 +6,7 @@ set +x
 PLUGIN="easyduck"
 
 ROOT=$(cd "$(dirname "$0")/.."; pwd)
-cd "$ROOT/ci_cd/bin"
+cd "$ROOT/piepelines/bin"
 
 # Turn our base64-encoded certificate back to a regular .p12 file
 echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12

@@ -6,7 +6,7 @@ set +x
 PLUGIN="easyduck"
 
 ROOT=$(cd "$(dirname "$0")/.."; pwd)
-cd "$ROOT/ci_cd/bin"
+cd "$ROOT/piepelines/bin"
 pwd
 
 echo  "##########################################"
