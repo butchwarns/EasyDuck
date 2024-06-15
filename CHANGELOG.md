@@ -1,7 +1,5 @@
 # easyduck release notes
 
-## v0.1.0
+## v0.1.0_pre
 
 Non-functional release to test pipeline.
-
-## (current) v0.1.1
