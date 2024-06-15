@@ -92,9 +92,9 @@ jobs:
 
       - name: "Upload Release"
         run: |
-          if [ "${{ env.RELEASE_TYPE }}" == "production" ]; then
+          if [ "${{ env.RELEASE_TYPE }}" == "prod" ]; then
             ./pipelines/upload_release.sh ${{ env.TAG_NAME }}
-          elif [ "${{ env.RELEASE_TYPE }}" == "prerelease" ]; then
+          elif [ "${{ env.RELEASE_TYPE }}" == "pre" ]; then
             ./pipelines/upload_release.sh ${{ env.TAG_NAME }} --prerelease
           else
             echo "Unknown release type!"
