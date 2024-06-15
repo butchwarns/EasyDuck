@@ -43,6 +43,6 @@ cd "$ROOT"
 BIN_FOLDER=pipelines/bin
 rm -Rf ./$BIN_FOLDER 
 mkdir ./$BIN_FOLDER
-echo "Copying plugin builds to $BIN_FOLDER"
 cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/AU/$PLUGIN.component" "$ROOT/$BIN_FOLDER"
 cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/VST3/$PLUGIN.vst3" "$ROOT/$BIN_FOLDER"
+echo -e "\nCopied plugin builds to $BIN_FOLDER"

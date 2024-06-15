@@ -45,7 +45,7 @@ jobs:
 
       - name: "codesign_notarize_plugins.sh"
         run: |
-          ./pipelines/codesign_notarize_plugins.sh
+          sudo ./pipelines/codesign_notarize_plugins.sh
         shell: bash
         env:
           MACOS_CERTIFICATE: ${{ secrets.PROD_MACOS_CERTIFICATE }}
