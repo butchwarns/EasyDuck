@@ -6,7 +6,7 @@ set +x
 PLUGIN="easyduck"
 
 ROOT=$(cd "$(dirname "$0")/.."; pwd)
-cd "$ROOT/piepelines/bin"
+cd "$ROOT/pipelines/bin"
 
 echo  "##########################################"
 echo -e "\nUploading GitHub release.. $1\n"

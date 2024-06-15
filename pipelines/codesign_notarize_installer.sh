@@ -6,7 +6,7 @@ set +x
 PLUGIN="easyduck"
 
 ROOT=$(cd "$(dirname "$0")/.."; pwd)
-cd "$ROOT/piepelines/packaging/mac"
+cd "$ROOT/pipelines/packaging/mac"
 
 
 # Turn our base64-encoded certificate back to a regular .p12 file
@@ -20,7 +20,7 @@ security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI
 echo  "##########################################"
 echo -e "\nCodesign Installer\n"
 
-cd "$ROOT/piepelines/packaging/mac"
+cd "$ROOT/pipelines/packaging/mac"
 /usr/bin/productsign -s "$MACOS_CERTIFICATE_INSTALLER_NAME" --timestamp ./build/$PLUGIN.pkg ../../bin/$PLUGIN.pkg
 rm -rf ./build/$PLUGIN.pkg
 
