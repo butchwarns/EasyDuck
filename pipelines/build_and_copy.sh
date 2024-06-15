@@ -26,7 +26,7 @@ mkdir bin
 # Build plugin
 mkdir -p "$ROOT/build"
 cd "$ROOT/build"
-cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_DEPLOYMENT_TARGE=10.11
+cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11
 cmake --build . --config $BUILD_TYPE
 
 # Copy plugin builds to dedicated folder
