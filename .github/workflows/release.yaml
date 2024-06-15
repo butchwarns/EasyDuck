@@ -17,6 +17,12 @@ jobs:
         with:
           xcode-version: "15.1"
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+
       - name: Get branch name for tag
         id: fetch_branch
         run: |
@@ -41,12 +47,6 @@ jobs:
         env:
           GITHUB_REF: ${{ github.ref }}
           BRANCH_NAME: ${{ env.BRANCH_NAME }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-          submodules: recursive
 
       - name: "build_and_copy.sh release"
         run: |
