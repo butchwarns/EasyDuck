@@ -35,7 +35,7 @@ esac
 # Build plugin
 mkdir -p "$ROOT/build"
 cd "$ROOT/build"
-cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11 -DPLUGIN_COPY_STEP=$PLUGIN_COPY_STEP
+cmake .. -GUnix\ Makefiles -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DPLUGIN_COPY_STEP=$PLUGIN_COPY_STEP
 cmake --build . --config $BUILD_TYPE
 
 # Make folder for built plugins
@@ -45,4 +45,5 @@ rm -Rf ./$BIN_FOLDER
 mkdir ./$BIN_FOLDER
 cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/AU/$PLUGIN.component" "$ROOT/$BIN_FOLDER"
 cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/VST3/$PLUGIN.vst3" "$ROOT/$BIN_FOLDER"
+cp -R "$ROOT/build/${PLUGIN}_artefacts/$BUILD_TYPE/AAX/$PLUGIN.aaxplugin" "$ROOT/$BIN_FOLDER"
 echo -e "\nCopied plugin builds to $BIN_FOLDER"

@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(PLUGIN_COPY_STEP "Copy the plugin to the default location after building")
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version")
+
 project(easyduck VERSION 0.1.0)
 
 add_subdirectory(external/JUCE)                  
