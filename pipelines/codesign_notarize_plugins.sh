@@ -49,4 +49,4 @@ echo -e "\nStaple Plug-Ins\n"
 echo "Attach staple"
 xcrun stapler staple $PLUGIN.vst3
 xcrun stapler staple $PLUGIN.component
-xcrun stapler staple $PLUGIN.aaaxplugin
+xcrun stapler staple $PLUGIN.aaxplugin
