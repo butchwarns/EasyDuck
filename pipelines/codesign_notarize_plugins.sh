@@ -27,6 +27,7 @@ echo -e "\nCodesign Plug-Ins\n"
 
 /usr/bin/codesign --force -s "$MACOS_CERTIFICATE_NAME" --options runtime $PLUGIN.vst3 -v --timestamp
 /usr/bin/codesign --force -s "$MACOS_CERTIFICATE_NAME" --options runtime $PLUGIN.component -v --timestamp
+/usr/bin/codesign --force -s "$MACOS_CERTIFICATE_NAME" --options runtime $PLUGIN.aaxplugin -v --timestamp
 
 echo  "##########################################"
 
@@ -39,7 +40,7 @@ echo  "##########################################"
 echo -e "\nNotarize Plug-Ins\n"
 
 echo "Creating temporary notarization archive"
-zip -r ${PLUGIN}_plugins_mac.zip $PLUGIN.vst3 $PLUGIN.component
+zip -r ${PLUGIN}_plugins_mac.zip $PLUGIN.vst3 $PLUGIN.component $PLUGIN.aaxplugin
 xcrun notarytool submit --verbose "${PLUGIN}_plugins_mac.zip" --keychain-profile "notarytool-profile" --wait --timeout 30m
 
 echo  "##########################################"
@@ -48,3 +49,4 @@ echo -e "\nStaple Plug-Ins\n"
 echo "Attach staple"
 xcrun stapler staple $PLUGIN.vst3
 xcrun stapler staple $PLUGIN.component
+xcrun stapler staple $PLUGIN.aaaxplugin
