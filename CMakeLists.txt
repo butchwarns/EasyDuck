@@ -8,7 +8,7 @@ option(PLUGIN_COPY_STEP "Copy the plugin to the default location after building"
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version")
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE STRING "Build architectures for OS X")
 
-project(easyduck VERSION 0.1.1)
+project(easyduck VERSION 0.1.2)
 
 add_subdirectory(external/JUCE)                  
 add_subdirectory(external/BDSP)
