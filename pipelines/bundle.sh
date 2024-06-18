@@ -13,6 +13,6 @@ echo  "##########################################"
 echo -e "\nCreate .zip archive\n"
 
 # Bundle plugin installer, raw plugins and changelog
-zip -r ${PLUGIN}_mac.zip $PLUGIN.vst3 $PLUGIN.component $PLUGIN.pkg ../CHANGELOG.md
+zip -r ${PLUGIN}_mac.zip $PLUGIN.vst3 $PLUGIN.component $PLUGIN.aaxplugin $PLUGIN.pkg ../CHANGELOG.md
 
 echo  "##########################################"
