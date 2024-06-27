@@ -24,10 +24,7 @@ int PluginProcessor::window_width_saved = sizes_ui::WIN_WIDTH;
 int PluginProcessor::window_height_saved = sizes_ui::WIN_HEIGHT;
 
 PluginProcessor::PluginProcessor()
-    : AudioProcessor(BusesProperties()
-                         .withInput("Input", juce::AudioChannelSet::stereo())
-                         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-                         .withInput("Sidechain", juce::AudioChannelSet::stereo())),
+    : AudioProcessor(get_buses_properties()),
       parameters(*this)
 {
 }
@@ -99,10 +96,6 @@ void PluginProcessor::releaseResources()
 
 bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
 {
-    // Do not support disabled inputs/outputs
-    if (layouts.getMainInputChannelSet() == juce::AudioChannelSet::disabled() || layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled())
-        return false;
-
     // Stereo output
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
     {
@@ -115,11 +108,18 @@ bool PluginProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const
         return false;
     }
 
-    // Stereo sidechain input
-    if (layouts.getNumChannels(true, 2) != 2)
-    {
+    // Mono sidechain input
+    const auto sidechain_bus = layouts.getBuses(true)[1];
+    if (sidechain_bus != juce::AudioChannelSet::mono())
         return false;
-    }
+
+    // Do not support disabled buses
+    if (layouts.getMainInputChannelSet() == juce::AudioChannelSet::disabled())
+        return false;
+    if (layouts.getMainOutputChannelSet() == juce::AudioChannelSet::disabled())
+        return false;
+    if (sidechain_bus.isDisabled())
+        return false;
 
     return true;
 }
@@ -132,17 +132,16 @@ void PluginProcessor::processBlock(juce::AudioBuffer<float> &buffer,
     juce::ScopedNoDenormals noDenormals;
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    const int OFFSET_SIDECHAIN_CHANNELS = 2;
-
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
-        auto input_sidechain = buffer.getReadPointer(channel + OFFSET_SIDECHAIN_CHANNELS);
+        juce::AudioSampleBuffer input_sidechain = getBusBuffer(buffer, true, 1);
+        auto *sc = input_sidechain.getReadPointer(0);
 
         auto *y = buffer.getWritePointer(channel);
 
         for (int i = 0; i < buffer.getNumSamples(); ++i)
         {
-            y[i] += input_sidechain[i];
+            y[i] += sc[i];
         }
     }
 }
@@ -209,4 +208,14 @@ int PluginProcessor::get_saved_window_height()
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 {
     return new PluginProcessor();
+}
+
+juce::AudioProcessor::BusesProperties PluginProcessor::get_buses_properties()
+{
+    const auto buses_properties = BusesProperties()
+                                      .withInput("Input", juce::AudioChannelSet::stereo())
+                                      .withOutput("Output", juce::AudioChannelSet::stereo())
+                                      .withInput("Sidechain", juce::AudioChannelSet::mono());
+
+    return buses_properties;
 }

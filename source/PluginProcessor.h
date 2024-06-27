@@ -64,5 +64,7 @@ private:
     static int window_width_saved;
     static int window_height_saved;
 
+    static juce::AudioProcessor::BusesProperties get_buses_properties();
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginProcessor)
 };
