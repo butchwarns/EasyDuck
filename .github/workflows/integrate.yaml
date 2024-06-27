@@ -12,6 +12,10 @@ jobs:
     name: integration_pipeline
     runs-on: macos-latest
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "15.1"
+
       - uses: actions/checkout@v4
         with:
           submodules: recursive
