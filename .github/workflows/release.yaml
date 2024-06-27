@@ -33,7 +33,7 @@ jobs:
             echo "RELEASE_TYPE=prod" >> $GITHUB_ENV
           fi
 
-      - name: "build_and_copy.sh release"
+      - name: "sudo build_and_copy.sh release"
         run: |
           ./pipelines/build_and_copy.sh release --PLUGIN_COPY_STEP=FALSE
         shell: bash
