@@ -22,7 +22,7 @@ jobs:
 
       - name: "build_and_copy.sh debug"
         run: |
-          ./pipelines/build_and_copy.sh debug
+          sudo ./pipelines/build_and_copy.sh debug
         shell: bash
 
       - name: "validate.sh"

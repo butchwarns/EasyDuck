@@ -35,7 +35,7 @@ jobs:
 
       - name: "build_and_copy.sh release"
         run: |
-          ./pipelines/build_and_copy.sh release --PLUGIN_COPY_STEP=FALSE
+          sudo ./pipelines/build_and_copy.sh release --PLUGIN_COPY_STEP=FALSE
         shell: bash
 
       - name: "validate.sh"
